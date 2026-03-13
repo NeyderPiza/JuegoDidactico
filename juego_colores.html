@@ -197,6 +197,7 @@
   <div class="header">
     <h1>🌈 Aprende los Colores</h1>
     <p>¡Un juego divertido para aprender colores del campo!</p>
+    <div style="font-size:0.9rem;color:#888;margin-top:12px;font-weight:600">Desarrollado por: Yoleida Piza Basto</div>
   </div>
 
   <!-- SCORE -->
@@ -248,7 +249,7 @@ const L1_QUESTIONS = [
   { question: '¿Qué color es el tomate?', emoji: '🍅', answer: 'Rojo' },
   { question: '¿Qué color es el sol?', emoji: '☀️', answer: 'Amarillo' },
   { question: '¿Qué color es el árbol?', emoji: '🌳', answer: 'Verde' },
-  { question: '¿Qué color es el cielo?', emoji: '🌤️', answer: 'Azul' },
+  { question: '¿Qué color es el mar?', emoji: '🌊', answer: 'Azul' },
   { question: '¿Qué color es la nube?', emoji: '☁️', answer: 'Blanco' },
   { question: '¿Qué color es la naranja?', emoji: '🍊', answer: 'Naranja' },
   { question: '¿Qué color es la uva?', emoji: '🍇', answer: 'Morado' },
@@ -257,7 +258,7 @@ const L1_QUESTIONS = [
 const L2_PAIRS = [
   { color: 'Amarillo', hex: '#FDD835', emoji: '🥭', label: 'Mango' },
   { color: 'Verde',    hex: '#43A047', emoji: '🌳', label: 'Árbol' },
-  { color: 'Azul',     hex: '#1E88E5', emoji: '🌤️', label: 'Cielo' },
+  { color: 'Azul',     hex: '#1E88E5', emoji: '🌊', label: 'Mar' },
   { color: 'Blanco',   hex: '#BDBDBD', emoji: '☁️', label: 'Nubes' },
 ];
 
@@ -265,11 +266,11 @@ const RAINBOW_ORDER = ['Rojo','Naranja','Amarillo','Verde','Azul','Morado'];
 const RAINBOW_HEX   = ['#E53935','#FB8C00','#FDD835','#43A047','#1E88E5','#8E24AA'];
 
 const L4_SCENES = [
-  { emoji:'🌿', bg:'linear-gradient(135deg,#5DBB4A,#2E7D32)', label:'Campo', answer:'Verde', hint:'¿De qué color es la hierba del campo?' },
-  { emoji:'☀️', bg:'linear-gradient(135deg,#FFD700,#FF8F00)', label:'Sol',   answer:'Amarillo', hint:'¿De qué color es el sol?' },
-  { emoji:'🌸', bg:'linear-gradient(135deg,#E91E63,#C2185B)', label:'Flor',  answer:'Rojo',    hint:'¿De qué color es esta flor?' },
-  { emoji:'🏔️', bg:'linear-gradient(135deg,#90CAF9,#1E88E5)', label:'Cielo', answer:'Azul',   hint:'¿De qué color es el cielo?' },
-  { emoji:'🐄', bg:'linear-gradient(135deg,#eee,#bbb)',        label:'Vaca',  answer:'Blanco',  hint:'¿De qué color es la vaca?' },
+  { emoji:'🌿', bg:'linear-gradient(135deg,#5DBB4A,#2E7D32)', label:'Campo', answer:'Verde', hint:'¿De qué color es la hierba del campo?', imageUrl:'https://cdn.pixabay.com/photo/2021/05/27/20/53/field-6289253_1280.jpg' },
+  { emoji:'☀️', bg:'linear-gradient(135deg,#FFD700,#FF8F00)', label:'Sol',   answer:'Amarillo', hint:'¿De qué color es el sol?', imageUrl:'https://static4.depositphotos.com/1004866/284/i/450/depositphotos_2846275-stock-photo-sunflower-in-the-field.jpg' },
+  { emoji:'🌸', bg:'linear-gradient(135deg,#E91E63,#C2185B)', label:'Flor',  answer:'Rojo',    hint:'¿De qué color es esta flor?', imageUrl:'https://media.istockphoto.com/id/174655938/es/foto/fondo-de-rosas.jpg?s=612x612&w=0&k=20&c=1cQ2k71K_tZ85rNAC1WSLu_ZHIjWToSgoMUcDpxIno0=' },
+  { emoji:'🏔️', bg:'linear-gradient(135deg,#90CAF9,#1E88E5)', label:'Cielo', answer:'Azul',   hint:'¿De qué color es el cielo?', imageUrl:'https://s1.ppllstatics.com/elcorreo/www/multimedia/202002/14/media/cortadas/cieloazul1-k1zG-U100155473657HzH-1968x1216@RC.jpg' },
+  { emoji:'🐄', bg:'linear-gradient(135deg,#eee,#bbb)',        label:'Vaca',  answer:'Blanco',  hint:'¿De qué color es la vaca?', imageUrl:'https://static.vecteezy.com/system/resources/previews/049/575/143/non_2x/white-cow-standing-on-transparent-background-free-png.png' },
 ];
 
 // ==================== STATE ====================
@@ -391,7 +392,7 @@ function checkL1(btn, chosen, answer) {
     btn.classList.add('wrong');
     // show correct
     btns.forEach(b=>{ if(b.querySelector('span').textContent===answer) b.classList.add('correct'); });
-    setTimeout(()=>{ l1Idx++; if(l1Idx>=L1_QUESTIONS.length){unlockNext();showFeedback('🎉','¡Nivel 1 Completado!',`Acertaste ${l1Correct} de ${L1_QUESTIONS.length}`,true);}else{renderL1Question(document.getElementById('gameCard'));} },1000);
+    setTimeout(()=>{ showFeedback('❌','¡Intenta de nuevo!','Ese no es el color correcto. ¡Observa bien!',false, ()=>renderL1Question(document.getElementById('gameCard'))); },1000);
   }
 }
 
@@ -582,7 +583,7 @@ function renderL4Scene(card) {
       <div class="progress-text">${l4Idx}/${L4_SCENES.length}</div>
     </div>
     <div class="memory-section">
-      <div class="photo-frame"><div class="photo-scene" style="background:${scene.bg}">${scene.emoji}</div><div class="photo-label">📱 Foto real tomada con celular</div></div>
+      <div class="photo-frame"><div class="photo-scene" style="background:${scene.bg}"> ${scene.imageUrl ? `<img src="${scene.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">` : scene.emoji} </div></div>
       <div class="color-buttons-memory" id="memBtns"></div>
     </div>
     <div style="text-align:center;margin-top:14px;font-weight:700;color:#555;font-size:1rem">${scene.hint}</div>
@@ -614,7 +615,7 @@ function checkL4(btn, chosen, answer) {
   } else {
     btn.classList.add('wrong');
     document.querySelectorAll('.mem-btn').forEach(b=>{ if(b.textContent===answer) b.classList.add('correct'); });
-    setTimeout(()=>{ l4Idx++; if(l4Idx>=L4_SCENES.length){unlockNext();showFeedback('📷','¡Nivel 4 Completado!',`¡Identificaste ${l4Correct} de ${L4_SCENES.length}!`,true);}else renderL4Scene(document.getElementById('gameCard')); },1000);
+    setTimeout(()=>{ showFeedback('❌','¡Intenta de nuevo!','Ese no es el color correcto. Observa bien la imagen.',false, ()=>renderL4Scene(document.getElementById('gameCard'))); },1000);
   }
 }
 
